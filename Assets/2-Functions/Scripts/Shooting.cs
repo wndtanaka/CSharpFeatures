@@ -6,6 +6,8 @@ namespace Functions
 {
     public class Shooting : MonoBehaviour
     {
+        public GameObject spawnPointPrefab;
+        public GameObject muzzleFlashPrefab;
         // Stores the object we want to Instantiate
         public GameObject projectilePrefab;
         // Kickback from firing a projectile
@@ -44,17 +46,18 @@ namespace Functions
             // Instantiate GameObject here
             GameObject projectile = Instantiate(projectilePrefab);
             // Projectile Position = Player Position
-            projectile.transform.position = transform.position;
+            projectile.transform.position = spawnPointPrefab.transform.position;
 
 
             Rigidbody2D rigid2D = projectile.GetComponent<Rigidbody2D>();
             // rigid2D.AddForce(transform.right * projectileSpeed);
             // Add velocity to the bullet
-            rigid2D.velocity = transform.right * projectileSpeed;
+            rigid2D.velocity = transform.up * projectileSpeed;
             // Apply a recoil
             rigid.AddForce(-transform.right * recoil, ForceMode2D.Impulse);
             // Destroy the bullet after 1 seconds
             // Destroy(projectile, 1.0f);
+            Instantiate(muzzleFlashPrefab, transform.position, Quaternion.identity);
         }
     }
 }
