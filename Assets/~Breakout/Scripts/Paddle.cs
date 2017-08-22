@@ -13,6 +13,7 @@ namespace Breakout
                 new Vector2(-0.5f,0.5f),
                 new Vector2(0.5f,0.5f)
             }; // list of directions for the ball to choose from
+        public bool isLaunch = true;
 
 
         // Use this for initialization
@@ -39,11 +40,13 @@ namespace Breakout
         }
         void CheckInput()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (isLaunch)
             {
-           
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
                     Fire();
-              
+                    isLaunch = false;
+                }
             }
         }
         void Movement()

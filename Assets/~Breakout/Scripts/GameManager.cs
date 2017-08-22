@@ -74,7 +74,6 @@ namespace Breakout
                     currentBlocks.transform.position = pos;
                 }
             }
-
         }
         // Update is called once per frame
         void Update()
