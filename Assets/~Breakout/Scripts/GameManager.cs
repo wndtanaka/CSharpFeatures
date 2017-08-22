@@ -6,10 +6,10 @@ namespace Breakout
 {
     public class GameManager : MonoBehaviour
     {
-        public int width = 20;
-        public int height = 20;
-        public Vector2 spacing = new Vector2(25f, 10f);
-        public Vector2 offset = new Vector2(-25f, 0f);
+        public int width = 8;
+        public int height = 6;
+        public Vector2 spacing = new Vector2(5.5f, 2f);
+        public Vector2 offset = new Vector2(-19f, 0f);
         public GameObject[] blockPrefabs;
         [Header("Debug")]
         public bool isDebugging = false;
