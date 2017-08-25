@@ -6,35 +6,36 @@ namespace Billiards
 {
     public class Ball : MonoBehaviour
     {
-        public float gravity = -9.81f;
+        public float stopSpeed = 0.2f;
 
-        private Rigidbody rigid;
+        private Rigidbody rb;
         // Use this for initialization
         void Start()
         {
-            rigid = GetComponent<Rigidbody>();
+            rb = GetComponent<Rigidbody>();
         }
 
         // Update is called once per frame
         void FixedUpdate()
         {
-            rigid.velocity = rigid.velocity.normalized + Vector3.back * gravity;
-        }
-        void OnCollisionEnter(Collision other)
-        {
-            Ball ball = other.collider.GetComponent<Ball>();
-            if (ball != null)
+            Vector3 vel = rb.velocity;
+
+            // Check if the velocity is going up
+            if (vel.y >0)
             {
-                ball.Activate();
+                // cap velocity
+                vel.y = 0;
             }
+            // If the velocity's speed is less then stop speed, then stop
+            if (vel.magnitude < stopSpeed)
+            {
+                vel = Vector3.zero;
+            }
+            rb.velocity = vel;
         }
-        public void Activate()
+        public void Hit(Vector3 dir, float impactForce)
         {
-            rigid.constraints = RigidbodyConstraints.None;
-        }
-        public void Deactivate()
-        {
-            rigid.constraints = RigidbodyConstraints.FreezeAll;
+            rb.AddForce(dir * impactForce, ForceMode.Impulse);
         }
     }
 }
