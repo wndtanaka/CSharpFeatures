@@ -2,10 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyBalls : MonoBehaviour {
-
-    void OnTriggerEnter(Collider col)
+namespace Billiards
+{
+    public class DestroyBalls : MonoBehaviour
     {
-        Destroy(gameObject);
+        public static int currentScore;
+
+        private bool isBallIn = true;
+
+        void OnTriggerEnter(Collider col)
+        {
+            if (isBallIn)
+            {
+                Destroy(gameObject);
+                currentScore++;
+            }
+            print("Score: " + currentScore);
+        }
     }
 }
