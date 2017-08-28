@@ -6,8 +6,6 @@ namespace Billiards
 {
     public class GameManager : MonoBehaviour
     {
-        public Ball[] ball;
-
         private Rigidbody rb;
         public Cue cue;
         // Use this for initialization

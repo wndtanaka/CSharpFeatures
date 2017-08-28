@@ -6,7 +6,7 @@ namespace Breakout
 {
     public class Paddle : MonoBehaviour
     {
-        public float movementSpeed = 20f; // speed the paddle moves
+        public float movementSpeed = 50f; // speed the paddle moves
         public Ball currentBall; // ball that should be attached to the paddle as a child
         public Vector2[] directions = new Vector2[]
             {

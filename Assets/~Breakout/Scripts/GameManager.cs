@@ -14,6 +14,7 @@ namespace Breakout
         [Header("Debug")]
         public bool isDebugging = false;
 
+        private DestroyBlocks scoreCounter;
         private GameObject[,] spawnedBlocks;
         // Use this for initialization
         void Start()
@@ -83,5 +84,6 @@ namespace Breakout
                 UpdateBlocks();
             }
         }
+
     }
 }
