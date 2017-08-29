@@ -9,10 +9,12 @@ namespace Billiards
         public float stopSpeed = 0.2f;
 
         private Rigidbody rb;
+        AudioSource audio;
         // Use this for initialization
         void Start()
         {
             rb = GetComponent<Rigidbody>();
+            audio = GetComponent<AudioSource>();
         }
 
         // Update is called once per frame
@@ -21,7 +23,7 @@ namespace Billiards
             Vector3 vel = rb.velocity;
 
             // Check if the velocity is going up
-            if (vel.y >0)
+            if (vel.y > 0)
             {
                 // cap velocity
                 vel.y = 0;
@@ -36,6 +38,10 @@ namespace Billiards
         public void Hit(Vector3 dir, float impactForce)
         {
             rb.AddForce(dir * impactForce, ForceMode.Impulse);
+        }
+        void OnCollisionEnter(Collision col)
+        {
+            audio.Play();
         }
     }
 }

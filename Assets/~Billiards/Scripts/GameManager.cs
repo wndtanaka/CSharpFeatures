@@ -6,21 +6,22 @@ namespace Billiards
 {
     public class GameManager : MonoBehaviour
     {
-        private Rigidbody rb;
+        public Ball[] checkBalls;
         public Cue cue;
+
+        private bool isBallStop = true;
+
+
         // Use this for initialization
         void Start()
         {
-            rb = GetComponent<Rigidbody>();
+
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (rb.IsSleeping())
-            {
-                cue.Activate();
-            }
+
         }
     }
 }

@@ -9,12 +9,19 @@ namespace Billiards
         public static int currentScore;
 
         private bool isBallIn = true;
+        public AudioSource audio;
+
+        private void Start()
+        {
+            audio = GetComponent<AudioSource>();
+        }
 
         void OnTriggerEnter(Collider col)
         {
             if (isBallIn)
             {
-                Destroy(gameObject);
+                audio.Play();
+                Destroy(col.gameObject);
                 currentScore++;
             }
             print("Score: " + currentScore);
