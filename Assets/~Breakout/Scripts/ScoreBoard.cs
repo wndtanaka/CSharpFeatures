@@ -19,11 +19,11 @@ namespace Breakout
         // Update is called once per frame
         void Update()
         {
-            ScoreBoardDisplay();
+            ScoreBoardDisplay(); // calling ScoreBoardDisplay in update when block destroyed
         }
         void ScoreBoardDisplay()
         {
-            scoreBoard.text = "Score: " + DestroyBlocks.currentScore;
+            scoreBoard.text = "Score: " + DestroyBlocks.currentScore; // displaying score (calling var from DestroyBlocks class)
         }
     }
 }

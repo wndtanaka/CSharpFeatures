@@ -9,7 +9,8 @@ namespace Breakout
 
         public void LoadNextLevel()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); // change the active scene to the next buildIndex
+            // SceneManager.LoadScene("Level_02"); 
         }
         public void BlockDestroyed()
         {

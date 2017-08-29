@@ -14,7 +14,7 @@ namespace Breakout
 
         void Start()
         {
-            blockCount++;
+            blockCount++; // increase block count
             scene = GameObject.FindObjectOfType<SceneNavigator>();
         }
         void OnCollisionEnter2D(Collision2D col)
@@ -33,7 +33,7 @@ namespace Breakout
                         currentScore += 1; // adding score upon breaking this block
                     }
                 }
-                if (gameObject.tag == "2Hit")
+                if (gameObject.tag == "2Hit") // checking block by tag
                 {
                     currentHit++;
                     if (currentHit >= maxHit)
@@ -45,7 +45,7 @@ namespace Breakout
                         currentScore += 2; // adding score upon breaking this block
                     }
                 }
-                if (gameObject.tag == "3Hit")
+                if (gameObject.tag == "3Hit") // checking block by tag
                 {
                     currentHit++;
                     if (currentHit >= maxHit)

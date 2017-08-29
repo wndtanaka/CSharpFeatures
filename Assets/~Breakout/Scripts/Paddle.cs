@@ -45,7 +45,7 @@ namespace Breakout
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     Fire();
-                    isLaunch = false;
+                    isLaunch = false; // change isLaunch to false, so it will not activate for more than once.
                 }
             }
         }
