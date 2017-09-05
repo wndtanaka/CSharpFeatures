@@ -7,12 +7,13 @@ namespace MineSweeper2D
     public class Grid : MonoBehaviour
     {
         public GameObject tilePrefab;
-        public int width = 10;
-        public int height = 10;
+        public static int width = 10;
+        public static int height = 10;
         public float spacing = 0.155f;
 
         private float offset = 0.5f;
-        private Tile[,] tiles;
+        public static Tile[,] tiles = new Tile[width, height];
+        Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
         // Use this for initialization
         void Start()
@@ -24,15 +25,7 @@ namespace MineSweeper2D
         // Update is called once per frame
         void Update()
         {
-            /*if (Input.GetButtonDown("Fire1"))
-            {
-                RaycastHit2D ray = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-                if (Physics2D.Raycast(ray))
-                {
-
-                }
-                    
-            }*/
+            OnMouseDown();
         }
         // functionality for spawning tiles
         Tile SpawnTile(Vector3 pos)
@@ -46,8 +39,8 @@ namespace MineSweeper2D
         // spawn tiles in a grid-like pattern
         void GenerateTiles()
         {
-            // create new 2D array of sizw width * height
-            tiles = new Tile[width, height];
+            // create new 2D array of size width * height
+            //tiles = new Tile[width, height];
 
             // loop through the entire tile list
             for (int x = 0; x < width; x++)
@@ -85,14 +78,34 @@ namespace MineSweeper2D
                     int desiredY = t.y + y;
                     if ((desiredX >= x || desiredX <= x) && (desiredY >= y || desiredY <= y))
                     {
-                       
+
                     }
                 }
-
-
-
             }
             return count;
         }
+        void OnMouseDown()
+        {
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint,mousePosition);
+
+            //    if (hit != null && hit.collider != null)
+            //    {
+            //        isHit = false;
+            //        Destroy(GameObject.Find(hit.collider.gameObject.name));
+            //    }
+            //}
+        }
+        //public static void uncoverMines()
+        //{
+        //    foreach (Tile tile in tiles)
+        //    {
+        //        if (tile.isMine)
+        //        {
+        //            tile.
+        //        }
+        //    }
+        //}
     }
 }
