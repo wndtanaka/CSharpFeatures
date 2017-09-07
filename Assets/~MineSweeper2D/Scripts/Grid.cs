@@ -13,16 +13,7 @@ namespace MineSweeper2D
         public static Tile[,] tiles = new Tile[width, height];
 
         private float offset = 0.5f;
-
-        Camera cam;
-        void Awake()
-        {
-            cam = FindObjectOfType<Camera>();
-            if (cam == null)
-            {
-                Debug.LogError("No Cam found");
-            }
-        }
+        Ray ray;
         // Use this for initialization
         void Start()
         {
@@ -30,14 +21,6 @@ namespace MineSweeper2D
             GenerateTiles();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                OnMouseDown();
-            }
-        }
         // functionality for spawning tiles
         Tile SpawnTile(Vector3 pos)
         {
@@ -76,65 +59,65 @@ namespace MineSweeper2D
                 }
             }
         }
-        public bool mineAt(int x, int y)
-        {
-            if (x >= 0 && y >= 0 && x < width && y < height)
-            {
-                return tiles[x, y].isMine;
-            }
-            return false;
-        }
         public int GetAdjacentMineCountAt(Tile t)
         {
-            /*int count = 0;
+            int count = 0;
             // loop through all elements and have each axis go between -1 to 1
-            for (int x = -1; x < 1; x++)
+            for (int x = -1; x <= 1; x++)
             {
                 // calculate desired coordinates from ones attained
-                for (int y = -1; y < 1; y++)
+                for (int y = -1; y <= 1; y++)
                 {
                     int desiredX = t.x + x;
                     int desiredY = t.y + y;
-                    if ((desiredX >= x || desiredX <= x) && (desiredY >= y || desiredY <= y))
-                    {
 
+                    if (desiredX >= 0 && desiredY >= 0 &&
+                        desiredX < width && desiredY < height)
+                    {
+                        Tile tile = tiles[desiredX, desiredY];
+                        if (tile.isMine)
+                        {
+                            count++;
+                        }
                     }
                 }
             }
-            return count;*/
-            int count = 0;
-
-            if (mineAt(t.x, t.y + 1)) ++count; // top
-            if (mineAt(t.x + 1, t.y + 1)) ++count; // top-right
-            if (mineAt(t.x + 1, t.y)) ++count; // right
-            if (mineAt(t.x + 1, t.y - 1)) ++count; // bottom-right
-            if (mineAt(t.x, t.y - 1)) ++count; // bottom
-            if (mineAt(t.x - 1, t.y - 1)) ++count; // bottom-left
-            if (mineAt(t.x - 1, t.y)) ++count; // left
-            if (mineAt(t.x - 1, t.y + 1)) ++count; // top-left
-
             return count;
         }
-        void OnMouseDown()
+
+
+        //float AddNNumbers(float[] numbers)
+        //{
+        //    float result = 0;
+        //    for (int i = 0; i < numbers.Length; i++)
+        //    {
+        //        result += numbers[i];
+        //    }
+        //    return result;
+        //}
+        
+        void FixedUpdate()
         {
-            Vector2 mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-            Vector2 camPos = new Vector2(cam.transform.position.x, cam.transform.position.y);
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, camPos, 100f);
-            Debug.DrawLine(mousePosition, (mousePosition - camPos) * 10, Color.red);
-            if (hit.collider != null)
+            // IF mouse down (0)
+            if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Tile Hit!");
-                //uncoverMines();
-                Destroy(hit.collider.gameObject);
-            }
-        }
-        public static void uncoverMines()
-        {
-            foreach (Tile tile in tiles)
-            {
-                if (tile.isMine)
+                // LET ray = Camera main ScreenPointToRay(mouse Position)
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                // LET hit = Raycast(ray origin, ray direction)
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+                // IF hit.collider != null
+                if (hit.collider != null)
                 {
-                    tile.Reveal(2,2);
+                    // LET tile = hit collider's Tile component
+                    Tile tile = hit.collider.GetComponent<Tile>();
+                    // IF tile != null
+                    if (tile != null)
+                    {
+                        // LET adjacentMines = GetAdjacentMineCountAt(tile)
+                        int adjacentMines = GetAdjacentMineCountAt(tile);
+                        // CALL tile.Reveal(adjacentMines)
+                        tile.Reveal(adjacentMines);
+                    }
                 }
             }
         }
