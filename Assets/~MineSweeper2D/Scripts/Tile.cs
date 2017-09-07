@@ -29,7 +29,11 @@ namespace MineSweeper2D
         void Start()
         {
             // randomly decide if it's a min or not
-            isMine = Random.value < 0.05f;
+            isMine = Random.value < 0.1f;
+
+            int x = (int)transform.position.x;
+            int y = (int)transform.position.y;
+            Grid.tiles[x, y] = this;
         }
 
         // Update is called once per frame
@@ -44,6 +48,8 @@ namespace MineSweeper2D
             // Check if tile is a mine
             if (isMine)
             {
+                Grid.uncoverMines();
+                print("You Lose");
                 // sets sprite to mine sprite
                 rend.sprite = mineSprites[mineState];
             }

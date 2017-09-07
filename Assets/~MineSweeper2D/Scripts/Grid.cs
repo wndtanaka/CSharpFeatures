@@ -10,11 +10,19 @@ namespace MineSweeper2D
         public static int width = 10;
         public static int height = 10;
         public float spacing = 0.155f;
+        public static Tile[,] tiles = new Tile[width, height];
 
         private float offset = 0.5f;
-        public static Tile[,] tiles = new Tile[width, height];
-        Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
+        Camera cam;
+        void Awake()
+        {
+            cam = FindObjectOfType<Camera>();
+            if (cam == null)
+            {
+                Debug.LogError("No Cam found");
+            }
+        }
         // Use this for initialization
         void Start()
         {
@@ -25,7 +33,10 @@ namespace MineSweeper2D
         // Update is called once per frame
         void Update()
         {
-            OnMouseDown();
+            if (Input.GetButtonDown("Fire1"))
+            {
+                OnMouseDown();
+            }
         }
         // functionality for spawning tiles
         Tile SpawnTile(Vector3 pos)
@@ -65,9 +76,17 @@ namespace MineSweeper2D
                 }
             }
         }
+        public bool mineAt(int x, int y)
+        {
+            if (x >= 0 && y >= 0 && x < width && y < height)
+            {
+                return tiles[x, y].isMine;
+            }
+            return false;
+        }
         public int GetAdjacentMineCountAt(Tile t)
         {
-            int count = 0;
+            /*int count = 0;
             // loop through all elements and have each axis go between -1 to 1
             for (int x = -1; x < 1; x++)
             {
@@ -82,30 +101,42 @@ namespace MineSweeper2D
                     }
                 }
             }
+            return count;*/
+            int count = 0;
+
+            if (mineAt(t.x, t.y + 1)) ++count; // top
+            if (mineAt(t.x + 1, t.y + 1)) ++count; // top-right
+            if (mineAt(t.x + 1, t.y)) ++count; // right
+            if (mineAt(t.x + 1, t.y - 1)) ++count; // bottom-right
+            if (mineAt(t.x, t.y - 1)) ++count; // bottom
+            if (mineAt(t.x - 1, t.y - 1)) ++count; // bottom-left
+            if (mineAt(t.x - 1, t.y)) ++count; // left
+            if (mineAt(t.x - 1, t.y + 1)) ++count; // top-left
+
             return count;
         }
         void OnMouseDown()
         {
-            //if (Input.GetMouseButtonDown(0))
-            //{
-            //    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint,mousePosition);
-
-            //    if (hit != null && hit.collider != null)
-            //    {
-            //        isHit = false;
-            //        Destroy(GameObject.Find(hit.collider.gameObject.name));
-            //    }
-            //}
+            Vector2 mousePosition = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+            Vector2 camPos = new Vector2(cam.transform.position.x, cam.transform.position.y);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, camPos, 100f);
+            Debug.DrawLine(mousePosition, (mousePosition - camPos) * 10, Color.red);
+            if (hit.collider != null)
+            {
+                Debug.Log("Tile Hit!");
+                //uncoverMines();
+                Destroy(hit.collider.gameObject);
+            }
         }
-        //public static void uncoverMines()
-        //{
-        //    foreach (Tile tile in tiles)
-        //    {
-        //        if (tile.isMine)
-        //        {
-        //            tile.
-        //        }
-        //    }
-        //}
+        public static void uncoverMines()
+        {
+            foreach (Tile tile in tiles)
+            {
+                if (tile.isMine)
+                {
+                    tile.Reveal(2,2);
+                }
+            }
+        }
     }
 }
