@@ -19,10 +19,13 @@ namespace TowerDefense
             // LET fireDirection = targetPos - barrelPos
             Vector3 fireDirection = targetPos - barrelPos;
             // SET cannon's rotation = Quaternion.LookRotation(fireDirection,Vector3.up)
+            transform.rotation = Quaternion.LookRotation(fireDirection, Vector3.up);
             // LET clone = Instantiate(projectilePrefab, barrelPos, barrelRot)
-            
+            GameObject clone = Instantiate(projectilePrefab,barrelPos,barrelRot);
             // LET p = clone's Projectile component
+            Projectile p = clone.GetComponent<Projectile>();
             // SET p.direction = fireDirection
+            p.direction = fireDirection;
         }
     }
 }

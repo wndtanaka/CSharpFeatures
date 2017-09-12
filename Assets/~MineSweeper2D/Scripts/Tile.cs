@@ -16,6 +16,7 @@ namespace MineSweeper2D
         [Header("References")]
         public Sprite[] emptySprites; // list of empty sprites
         public Sprite[] mineSprites; // the mine sprites
+        public Sprite flag;
 
         private SpriteRenderer rend; // reference to the sprite renderer
 
@@ -44,7 +45,6 @@ namespace MineSweeper2D
             // Check if tile is a mine
             if (isMine)
             {
-                print("You Lose");
                 // sets sprite to mine sprite
                 rend.sprite = mineSprites[mineState];
             }

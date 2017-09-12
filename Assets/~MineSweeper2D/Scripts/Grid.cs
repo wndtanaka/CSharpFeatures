@@ -85,38 +85,123 @@ namespace MineSweeper2D
             return count;
         }
 
-
-        //float AddNNumbers(float[] numbers)
+        //void FixedUpdate()
         //{
-        //    float result = 0;
-        //    for (int i = 0; i < numbers.Length; i++)
+        //    // IF mouse down (0)
+        //    if (Input.GetMouseButtonDown(0))
         //    {
-        //        result += numbers[i];
+        //        // LET ray = Camera main ScreenPointToRay(mouse Position)
+        //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //        // LET hit = Raycast(ray origin, ray direction)
+        //        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+        //        // IF hit.collider != null
+        //        if (hit.collider != null)
+        //        {
+        //            // LET tile = hit collider's Tile component
+        //            Tile tile = hit.collider.GetComponent<Tile>();
+        //            // IF tile != null
+        //            if (tile != null)
+        //            {
+        //                // LET adjacentMines = GetAdjacentMineCountAt(tile)
+        //                int adjacentMines = GetAdjacentMineCountAt(tile);
+        //                // CALL tile.Reveal(adjacentMines)
+        //                tile.Reveal(adjacentMines);
+        //            }
+        //        }
         //    }
-        //    return result;
         //}
-        
-        void FixedUpdate()
+        public void FFuncover(int x, int y, bool[,] visited)
         {
-            // IF mouse down (0)
+            // IF x>= 0 AND y>= 0 AND x < width AND y < height
+            if (x >= 0 && y >= 0 && x < width && y < height)
+            {
+                if (visited[x, y])
+                {
+                    return;
+                }
+                Tile tile = tiles[x, y];
+                int adjacentMines = GetAdjacentMineCountAt(tile);
+                tile.Reveal(adjacentMines);
+
+                if (adjacentMines > 0)
+                {
+                    return;
+                }
+                visited[x, y] = true;
+
+                FFuncover(x - 1, y, visited);
+                FFuncover(x + 1, y, visited);
+                FFuncover(x, y - 1, visited);
+                FFuncover(x, y + 1, visited);
+            }
+        }
+        // uncover all mines that are in the grid
+        public void UncoverMines(int mineState)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Tile currentTile = tiles[x, y];
+                    if(currentTile.isMine)
+                    {
+                        int adjacentMines = GetAdjacentMineCountAt(currentTile);
+                        currentTile.Reveal(adjacentMines, mineState);
+                    }
+                }
+            }
+        }
+        bool NoMoreEmptyTiles()
+        {
+            int emptyTileCount = 0;
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Tile currentTile = tiles[x, y];
+                    if (!currentTile.isRevealed && !currentTile.isMine)
+                    {
+                        emptyTileCount++;
+                    }
+                }
+            }
+            return emptyTileCount == 0;
+        }
+        // Takes in a tile selected by the user in some way to reveal it
+        public void SelectTile(Tile selectedTile)
+        {
+            int adjacentMines = GetAdjacentMineCountAt(selectedTile);
+            selectedTile.Reveal(adjacentMines);
+            if (selectedTile.isMine)
+            {
+                UncoverMines(0);
+                print("No Chicken Dinner For You");
+            }
+            else if (adjacentMines == 0)
+            {
+                int x = selectedTile.x;
+                int y = selectedTile.y;
+                FFuncover(x,y,new bool[width,height]);
+            }
+            if (NoMoreEmptyTiles())
+            {
+                UncoverMines(1);
+                print("Winner Winner Chicken Dinner");
+            }
+        }
+        void Update()
+        {
+            
             if (Input.GetMouseButtonDown(0))
             {
-                // LET ray = Camera main ScreenPointToRay(mouse Position)
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                // LET hit = Raycast(ray origin, ray direction)
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-                // IF hit.collider != null
                 if (hit.collider != null)
                 {
-                    // LET tile = hit collider's Tile component
-                    Tile tile = hit.collider.GetComponent<Tile>();
-                    // IF tile != null
-                    if (tile != null)
+                    Tile hitTile = hit.collider.GetComponent<Tile>();
+                    if (hitTile != null)
                     {
-                        // LET adjacentMines = GetAdjacentMineCountAt(tile)
-                        int adjacentMines = GetAdjacentMineCountAt(tile);
-                        // CALL tile.Reveal(adjacentMines)
-                        tile.Reveal(adjacentMines);
+                        SelectTile(hitTile);
                     }
                 }
             }
