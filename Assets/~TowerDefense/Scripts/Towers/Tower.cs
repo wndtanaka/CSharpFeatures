@@ -23,7 +23,7 @@ namespace TowerDefense
         void OnTriggerExit(Collider col)
         {
             Enemy e = col.GetComponent<Enemy>();
-            if (e != null) ;
+            if (e != null)
             {
                 enemies.Remove(e);
             }
@@ -53,7 +53,7 @@ namespace TowerDefense
         }
         void Update()
         {
-            attackTimer *= Time.deltaTime;
+            attackTimer += Time.deltaTime;
             if (attackTimer >= attackRate)
             {
                 Attack();
