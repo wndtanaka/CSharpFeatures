@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnerScript : MonoBehaviour
 {
-    public GameObject[] prefabs = null;
+    public GameObject[] prefabs;
     public float spawnRadius = 5f;
     public float spawnRate = 1f;
     private float spawnFactor = 0f;

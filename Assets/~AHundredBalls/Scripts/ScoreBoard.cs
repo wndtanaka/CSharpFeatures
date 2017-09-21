@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ScoreBoard : MonoBehaviour
 {
-    int score;
-    Text scoreBoard;
+    public Text scoreBoard;
+    ScoreCounter scoreCounter;
 
     // Use this for initialization
     void Awake()
@@ -20,14 +20,6 @@ public class ScoreBoard : MonoBehaviour
     }
     void DisplayScore()
     {
-        scoreBoard.text = "Score: " + score;
-    }
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.tag == "Bucket")
-        {
-            score++;
-            Debug.Log(score);
-        }
+        scoreBoard.text = "Score: " + scoreCounter.score;
     }
 }
