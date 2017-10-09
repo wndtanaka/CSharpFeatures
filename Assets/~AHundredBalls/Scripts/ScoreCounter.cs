@@ -5,13 +5,9 @@ using UnityEngine.UI;
 
 public class ScoreCounter : MonoBehaviour
 {
-    public Text scoreBoard;
     public int score;
+    public Text scoreText;
 
-    void Start()
-    {
-        scoreBoard = FindObjectOfType<Text>();
-    }
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == "Ball")
@@ -19,5 +15,9 @@ public class ScoreCounter : MonoBehaviour
             score++;
             Debug.Log(score);
         }
+    }
+    void Update()
+    {
+        scoreText.text = "Score: " + score;
     }
 }
