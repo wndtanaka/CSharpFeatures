@@ -7,31 +7,18 @@ namespace Inheritance
     public class Splodey : Enemy
     {
         [Header("Splodey")]
-        public float explosionRadius = 5f;
-        public float knockback = 100f;
+        public float explosionRadius = 10f;
+        public float impactForce = 10f;
+        public GameObject explosionParticles;
 
-        protected override void Attack()
+        public override void Attack()
         {
-            // Play an animation
-            // Perform explosion physics
-            Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius);
-            foreach (var hit in hits)
-            {
-                Health h = hit.gameObject.GetComponent<Health>();
-                if (h != null)
-                {
-                    h.TakeDamage(damage);
-                }
-                Rigidbody r = hit.gameObject.GetComponent<Rigidbody>();
-                if (r != null)
-                {
-                    r.AddExplosionForce(knockback, transform.position, explosionRadius, 0f, ForceMode.Impulse);
-                }
-            }
+
         }
-        protected override void OnAttackEnd()
+
+        void Explode()
         {
-            Destroy(gameObject);
+
         }
     }
 }

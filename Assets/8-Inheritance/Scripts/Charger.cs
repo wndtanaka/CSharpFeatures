@@ -6,9 +6,17 @@ namespace Inheritance
 {
     public class Charger : Enemy
     {
-
         [Header("Charger")]
-        public float chargeSpeed = 5f;
+        public float impactForce =10f;
         public float knockback = 10f;
+
+        public override void Attack()
+        {
+
+        }
+        void Charge()
+        {
+
+        }
     }
 }
