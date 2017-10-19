@@ -14,17 +14,27 @@ namespace Inheritance
         private Animator anim;
         private EnemyAgent ea;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             anim = GetComponent<Animator>();
             ea = GetComponent<EnemyAgent>();
         }
 
-        public override void Attack()
+        protected override void Attack()
         {
-            Charge();
+            
         }
-        IEnumerator Charge()
+        public void Charge()
+        {
+
+        }
+        protected override void Update()
+        {
+            base.Update();
+        }
+        /*IEnumerator Charge()
         {
             yield return new WaitForSeconds(1.2f);
             Instantiate(chargeParticles,transform.position,transform.rotation);
@@ -38,6 +48,6 @@ namespace Inheritance
                 ea.nav.Stop();
                 StartCoroutine(Charge());
             }
-        }
+        }*/
     }
 }

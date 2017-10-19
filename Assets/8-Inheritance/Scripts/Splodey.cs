@@ -9,22 +9,49 @@ namespace Inheritance
         [Header("Splodey")]
         public float explosionRadius = 10f;
         public float impactForce = 10f;
+        public float explosionRate = 1f;
         public Transform explosionParticles;
 
-        private Animator anim;
-        private EnemyAgent ea;
+        private float explosionTimer = 0f;
+        //private Animator anim;
+        //private EnemyAgent ea;
 
-        void Awake()
+        protected override void Awake()
         {
-            anim = GetComponent<Animator>();
-            ea = GetComponent<EnemyAgent>();
+            base.Awake();
+            //anim = GetComponent<Animator>();
+            //ea = GetComponent<EnemyAgent>();
         }
-        public override void Attack()
+        protected override void Attack()
         {
-            Explode();
+            explosionTimer += Time.deltaTime;
+            if (explosionTimer >= explosionRate)
+            {
+                Splode();
+            }
         }
-
-        IEnumerator Explode()
+        protected override void OnAttackEnd()
+        {
+            explosionTimer = 0f;
+        }
+        public void Splode()
+        {
+            Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius);
+            foreach (Collider hit in hits)
+            {
+                Health h = hit.GetComponent<Health>();
+                if (h != null)
+                {
+                    h.TakeDamage(damage);
+                    rb.AddExplosionForce(impactForce,transform.position,explosionRadius);
+                }
+            }
+        }
+        protected override void Update()
+        {
+            base.Update();
+        }
+        /*IEnumerator Explode()
         {
             yield return new WaitForSeconds(1f);
             Instantiate(explosionParticles, transform.position, transform.rotation);
@@ -38,7 +65,7 @@ namespace Inheritance
                 StartCoroutine(Explode());
                 ea.nav.Stop();
             }
-        }
-        
+        }*/
+
     }
 }

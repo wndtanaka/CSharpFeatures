@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using GGL;
 namespace AI
 {
     public class Seek : SteeringBehaviour
@@ -30,6 +30,12 @@ namespace AI
                 // SET force = desiredForce - owner.velocity
                 force = desiredForce - owner.velocity;
             }
+            #region GizmosGL
+            GizmosGL.color = Color.red;
+            GizmosGL.AddLine(transform.position, transform.position + force);
+            GizmosGL.color = Color.blue;
+            GizmosGL.AddLine(transform.position, transform.position + desiredForce);
+            #endregion
             // Return the force... luke
             return force;
         }

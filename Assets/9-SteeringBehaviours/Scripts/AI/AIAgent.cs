@@ -7,12 +7,12 @@ namespace AI
 {
     public class AIAgent : MonoBehaviour
     {
-        public Vector3 force; // total force calculated from behaviours
-        public Vector3 velocity; // direction of travel and speed
-        public float maxVelocity = 100f; // max amount of velocity
+        public float maxSpeed = 100f; // max amount of velocity
         public float maxDistance = 10f; // 
-        public bool freezeRotation = false;// do we freeze rotation?
 
+        [HideInInspector] public Vector3 velocity; // direction of travel and speed
+        public bool freezeRotation = false;// do we freeze rotation?
+        private Vector3 force; // total force calculated from behaviours
         private NavMeshAgent nav;
         // List of SteeringBehaviours (i.e, Seek, Flee, Wander, etc)
         private List<SteeringBehaviour> behaviours;
@@ -20,11 +20,6 @@ namespace AI
         void Awake()
         {
             nav = GetComponent<NavMeshAgent>();
-        }
-
-        // Use this for initialization
-        void Start()
-        {
             behaviours = new List<SteeringBehaviour>(GetComponents<SteeringBehaviour>());
         }
 
@@ -44,12 +39,12 @@ namespace AI
                     continue;
                 }
                 // SET force = force + behaviour.GetForce() * weighting
-                force += behaviour.GetForce() * behaviour.weight;
+                force += behaviour.GetForce();
                 // IF force > maxVelocity
-                if (force.magnitude > maxVelocity)
+                if (force.magnitude > maxSpeed)
                 {
                     // SET force to force normalized x maxVelocity
-                    force = force.normalized * maxVelocity;
+                    force = force.normalized * maxSpeed;
                     // BREAK
                     break;
                 }
@@ -62,10 +57,10 @@ namespace AI
             // SET velocity to velocity + force x deltatime
             velocity += force * Time.deltaTime;
             // IF velocity > maxVelocity
-            if (velocity.magnitude > maxVelocity)
+            if (velocity.magnitude > maxSpeed)
             {
                 // SET velocity = velocity.normalized x maxVelocity
-                velocity = velocity.normalized * maxVelocity;
+                velocity = velocity.normalized * maxSpeed;
             }
             // IF velocity > zero
             if (velocity.magnitude > 0)

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace AI
 {
+    [RequireComponent(typeof(AIAgent))]
     public class SteeringBehaviour : MonoBehaviour
     {
         public float weight = 8f;
