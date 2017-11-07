@@ -18,7 +18,7 @@ namespace Asteroids
         void Spawn()
         {
             Vector3 rand = Random.insideUnitSphere * spawnRadius;
-            rand.z = 0f;
+            rand.z  = 0f;
             Vector3 pos = rand + transform.position;
             int index = Random.Range(0, asteroidsPrefabs.Length);
             GameObject clone = Instantiate(asteroidsPrefabs[index]);
